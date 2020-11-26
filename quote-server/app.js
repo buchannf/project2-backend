@@ -18,9 +18,19 @@ function rowToObject(row) {
         };
 }
 
+app.get('/quotes', (request, response) => {
+        const query = 'SELECT author, message, id FROM quote WHERE is_deleted = 0';
+        const params = [request.params.author, request.params.message];
+        connection.query(query, params, (error, rows) => {
+                response.send({
+                        ok: true,
+                        quotes: rows.map(rowToObject),
+                });
+        });
+});
 
 
-app.get('/quotes/:author/:message', (request, response) => {
+app.get('/quotes/:author', (request, response) => {
         const query = 'SELECT author, message, id FROM quote WHERE is_deleted = 0';
         const params = [request.params.author, request.params.message];
         connection.query(query, params, (error, rows) => {
