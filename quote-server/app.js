@@ -15,12 +15,13 @@ function rowToObject(row) {
         return {
                 author: row.author,
                 message: row.message,
+		id: row.id,
         };
 }
 
 app.get('/quotes', (request, response) => {
         const query = 'SELECT author, message, id FROM quote WHERE is_deleted = 0';
-        const params = [request.params.author, request.params.message];
+        const params = [request.params.author, request.params.message, request.params.id];
         connection.query(query, params, (error, rows) => {
                 response.send({
                         ok: true,
